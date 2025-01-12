@@ -1,17 +1,10 @@
 const express = require("express");
-const addLoanRouter = require("./addLoan");
-const repayLoanRouter = require("./repayLoan");
-const getLoanDetailsRouter = require("./getLoanDetails");
-const getTransactionHistoryRouter = require("./getTransactionHistory");
-const getDebtsRouter = require("./getDebts");
+const createKidRouter = require("./createKid");
+const createTaskRouter = require("./createTask");
 
 const router = express.Router();
 
-router.use("/add-loan", addLoanRouter);
-router.use("/repay-loan", repayLoanRouter);
-router.use("/loan-details", getLoanDetailsRouter);
-router.use("/transactions", getTransactionHistoryRouter);
-router.use("/debts", getDebtsRouter);
-
+router.use("/createKid", createKidRouter);
+router.use("/createTask", createTaskRouter);
 
 module.exports = router;
