@@ -2,7 +2,7 @@ const express = require('express');
 const { param } = require('express-validator');
 const { validateRequest } = require('../../middleware');
 const Kid = require('../../models/kid');
-const Task = require('../../models/Task');
+const Task = require('../../models/task');
 
 const router = express.Router();
 

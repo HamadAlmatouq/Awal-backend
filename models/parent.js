@@ -1,4 +1,4 @@
-const { model, Schema } = require('mongoose');
+const { model, Schema , Types} = require('mongoose');
 
 const ParentSchema = new Schema({
     name: { type: String, required: true },
