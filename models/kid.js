@@ -1,14 +1,15 @@
-const { model, Schema, Types } = require('mongoose');
+const { model, Schema } = require('mongoose');
+
 
 const KidSchema = new Schema({
-    name: { type: String, required: true },
-    steps: { type: Number, default: 0 },
-    points: { type: Number, default: 0 },
+    Kname: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
     birthday: { type: Date, required: true },
-    civilID: { type: String, required: true, unique: true },
+    civilID: { type: String, required: true },
     mobile: { type: String, required: true },
-    parent: { type: Types.ObjectId, ref: 'Parent', required: true }, // Reference to Parent model
-    account: { type: Types.ObjectId, ref: 'Account', required: true } // Reference to Account model
+    parentName: { type: String},
+    parent: { type: Schema.Types.ObjectId, ref: 'Parent' }, 
+    
 });
 
 module.exports = model('Kid', KidSchema);

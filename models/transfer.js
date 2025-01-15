@@ -1,8 +1,8 @@
 const { model, Schema, Types } = require('mongoose');
 
 const TransferSchema = new Schema({
-    fromAccount: { type: Types.ObjectId, ref: 'Account', required: true },
-    toAccount: { type: Types.ObjectId, ref: 'Account', required: true },
+    fromParent: { type: Types.ObjectId, ref: 'Parent', required: true },
+    toKid: { type: Types.ObjectId, ref: 'Kid', required: true },
     amount: { type: Number, required: true },
     date: { type: Date, default: Date.now },
 });

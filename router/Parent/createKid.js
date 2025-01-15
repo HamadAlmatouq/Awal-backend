@@ -1,39 +1,36 @@
 const express = require('express');
 const { body } = require('express-validator');
 const { validateRequest } = require('../../middleware');
-const Parent = require('../../models/Parent');
 const Kid = require('../../models/kid');
 
 const router = express.Router();
 
 router.post(
-    '/createKid',
+    '/',
     [
-        body('name').notEmpty().withMessage('Name is required'),
+        body('Kname').notEmpty().withMessage('Name is required'),
         body('email').isEmail().withMessage('Email must be valid'),
         body('birthday').notEmpty().withMessage('Birthday is required'),
         body('civilID').notEmpty().withMessage('Civil ID is required'),
-        body('mobile').notEmpty().withMessage('Mobile number is required'),
-        body('parentId').notEmpty().withMessage('Parent ID is required')
+        body('mobile').notEmpty().withMessage('Mobile number is required')
     ],
     validateRequest,
     async (req, res) => {
-        const { name, email, birthday, civilID, mobile, parentId } = req.body;
+        const { Kname, email, birthday, civilID, mobile } = req.body;
 
-        
-        const parent = await Parent.findById(parentId);
-        if (!parent) {
-            return res.status(404).send({ error: 'Parent not found' });
+        // Get the current user's information from the request
+        const currentUser = req.user;
+        if (!currentUser) {
+            return res.status(401).send({ error: 'Not authenticated' });
         }
 
-        
         const kid = new Kid({
-            name,
+            Kname,
             email,
             birthday,
             civilID,
             mobile,
-            parent: parentId
+            parentName: currentUser.name // Set parentName to the current user's name
         });
 
         await kid.save();

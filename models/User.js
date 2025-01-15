@@ -6,6 +6,7 @@ const { type } = require('os');
 const UserSchema = new Schema({
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    role: { type: String, required: true, default: 'parent' } ,// Ensure role is included
     parent: { type: Schema.Types.ObjectId, ref: 'Parent' }
 });
 

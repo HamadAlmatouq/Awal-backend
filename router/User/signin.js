@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 const { body } = require("express-validator");
 
 const User = require("../../models/User");
-
 const PasswordManager = require("../../helpers/PasswordManager");
 const validateRequest = require("../../middleware/validateRequest");
 const { BadRequestError } = require("../../errors");
@@ -21,16 +20,16 @@ router.post("/signin", validators, validateRequest, async (req, res, next) => {
 
   const user = await User.findOne({ username });
 
-  if (!user) return next(BadRequestError("Invalid credentials"));
+  if (!user) return next(new BadRequestError("Invalid credentials"));
 
   // Compare password
   const passwordsMatch = await PasswordManager.compare(user.password, password);
 
-  if (!passwordsMatch) return next(BadRequestError("Invalid credentials"));
+  if (!passwordsMatch) return next(new BadRequestError("Invalid credentials"));
 
   // Generate a token
   const token = jwt.sign(
-    { id: user.id, username: user.username },
+    { id: user.id, username: user.username, role: user.role }, // Include role in the token
     process.env.JWT_SECRET,
     { expiresIn: process.env.JWT_EXPIRATION }
   );

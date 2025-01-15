@@ -8,28 +8,32 @@ const Task = require('../../models/Task');
 const router = express.Router();
 
 router.post(
-    '/createTask',
+    '/',
     [
         body('title').notEmpty().withMessage('Title is required'),
         body('amount').isFloat({ gt: 0 }).withMessage('Amount must be greater than zero'),
         body('duration').isInt({ gt: 0 }).withMessage('Duration must be greater than zero'),
-        body('parentId').notEmpty().withMessage('Parent ID is required'),
-        body('kidId').notEmpty().withMessage('Kid ID is required')
+        body('Kname').notEmpty().withMessage('Kid name is required')
     ],
     validateRequest,
     async (req, res) => {
-        const { title, amount, duration, parentId, kidId } = req.body;
+        const { title, amount, duration, Kname } = req.body;
 
-        // Check if parent exists
-        const parent = await Parent.findById(parentId);
-        if (!parent) {
-            return res.status(404).send({ error: 'Parent not found' });
+        // Get the current user's information from the request
+        const currentUser = req.user;
+        if (!currentUser) {
+            return res.status(401).send({ error: 'Not authenticated' });
         }
 
-        // Check if kid exists and belongs to the parent
-        const kid = await Kid.findOne({ _id: kidId, parent: parentId });
+        // Check if the current user's role is parent
+        if (currentUser.role !== 'parent') {
+            return res.status(403).send({ error: 'User is not a parent' });
+        }
+
+        // Check if kid exists
+        const kid = await Kid.findOne({ Kname });
         if (!kid) {
-            return res.status(404).send({ error: 'Kid not found or does not belong to the parent' });
+            return res.status(404).send({ error: 'Kid not found' });
         }
 
         // Create a new task
@@ -37,8 +41,8 @@ router.post(
             title,
             amount,
             duration,
-            parent: parentId,
-            kid: kidId
+            parent: currentUser.id,
+            kid: kid._id
         });
 
         await task.save();

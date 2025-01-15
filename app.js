@@ -7,6 +7,7 @@ const { handleErrors, currentUser } = require("./middleware");
 const { NotFoundError } = require("./errors");
 
 const { authRouter } = require("./router/User");
+const { parentRouter } = require("./router/Parent");
 
 
 const app = express();
@@ -23,6 +24,7 @@ app.use(currentUser);
  * Routers
  */
 app.use("/auth", authRouter);
+app.use("/parent", parentRouter);
 
 
 /**
