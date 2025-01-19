@@ -7,8 +7,10 @@ const KidSchema = new Schema({
     birthday: { type: Date, required: true },
     civilID: { type: String, required: true },
     mobile: { type: String, required: true },
-    savings : { type: Number, default: 0},
-    balance : { type: Number, default: 0},
+    savings : { type: Number, default: 30},
+    balance : { type: Number, default: 55},
+    steps: { type: Number, default: 200},
+    points: { type: Number, default: 385},
     Pname: { type: String},
     parent: { type: Schema.Types.ObjectId, ref: 'Parent' }, 
     

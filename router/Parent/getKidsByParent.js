@@ -10,9 +10,9 @@ router.get('/', async (req, res) => {
             return res.status(401).send({ error: 'Not authenticated' });
         }
 
-        if (currentUser.role !== 'parent') {
-            return res.status(403).send({ error: 'User is not a parent' });
-        }
+        // if (currentUser.role !== 'parent') {
+        //     return res.status(403).send({ error: 'User is not a parent' });
+        // }
 
         const kids = await Kid.find({ parent: currentUser.id });
 
