@@ -30,7 +30,8 @@ router.post(
             birthday,
             civilID,
             mobile,
-            parentName: currentUser.name // Set parentName to the current user's name
+            Pname: currentUser.name, // Set Pname to the current user's name
+            parent: currentUser.id // Set parent to the current user's ID
         });
 
         await kid.save();
