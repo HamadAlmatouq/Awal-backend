@@ -1,19 +1,19 @@
 const express = require('express');
-const { body } = require('express-validator');
+const { query } = require('express-validator');
 const { validateRequest } = require('../../middleware');
 const Goal = require('../../models/goal');
 const Kid = require('../../models/kid');
 
 const router = express.Router();
 
-router.post(
+router.get(
     '/',
     [
-        body('Kname').notEmpty().withMessage('Kid name is required')
+        query('Kname').notEmpty().withMessage('Kid name is required')
     ],
     validateRequest,
     async (req, res) => {
-        const { Kname } = req.body;
+        const { Kname } = req.query;
 
         // Get the current user's information from the request
         const currentUser = req.user;
