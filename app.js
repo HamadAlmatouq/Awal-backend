@@ -10,6 +10,8 @@ const { authRouter } = require("./router/User");
 const { parentRouter } = require("./router/Parent");
 
 
+
+
 const app = express();
 app.use(cors());
 

@@ -1,23 +1,19 @@
 const express = require('express');
 const { body } = require('express-validator');
 const { validateRequest } = require('../../middleware');
-const Parent = require('../../models/Parent');
+const Transfer = require('../../models/transfer');
 const Kid = require('../../models/kid');
-const Task = require('../../models/Task');
 
 const router = express.Router();
 
 router.post(
     '/',
     [
-        body('title').notEmpty().withMessage('Title is required'),
-        body('amount').isFloat({ gt: 0 }).withMessage('Amount must be greater than zero'),
-        body('duration').isInt({ gt: 0 }).withMessage('Duration must be greater than zero'),
         body('Kname').notEmpty().withMessage('Kid name is required')
     ],
     validateRequest,
     async (req, res) => {
-        const { title, amount, duration, Kname } = req.body;
+        const { Kname } = req.body;
 
         // Get the current user's information from the request
         const currentUser = req.user;
@@ -36,18 +32,18 @@ router.post(
             return res.status(404).send({ error: 'Kid not found' });
         }
 
-        // Create a new task
-        const task = new Task({
-            title,
-            amount,
-            duration,
-            parent: currentUser.id,
-            kid: kid._id
+        // Delete the transfer record with allowance settings
+        const transfer = await Transfer.findOneAndDelete({
+            fromParent: currentUser.id,
+            toKid: kid._id,
+            frequency: { $exists: true }
         });
 
-        await task.save();
+        if (!transfer) {
+            return res.status(404).send({ error: 'Allowance not found' });
+        }
 
-        res.status(201).send(task);
+        res.status(200).send({ message: 'Allowance stopped successfully' });
     }
 );
 

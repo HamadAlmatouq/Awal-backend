@@ -3,21 +3,20 @@ const { body } = require('express-validator');
 const { validateRequest } = require('../../middleware');
 const Parent = require('../../models/Parent');
 const Kid = require('../../models/kid');
-const Task = require('../../models/Task');
+const Transfer = require('../../models/transfer');
 
 const router = express.Router();
 
 router.post(
     '/',
     [
-        body('title').notEmpty().withMessage('Title is required'),
+        body('Kname').notEmpty().withMessage('Kid name is required'),
         body('amount').isFloat({ gt: 0 }).withMessage('Amount must be greater than zero'),
-        body('duration').isInt({ gt: 0 }).withMessage('Duration must be greater than zero'),
-        body('Kname').notEmpty().withMessage('Kid name is required')
+        body('frequency').isIn(['daily', 'weekly', 'monthly']).withMessage('Frequency must be daily, weekly, or monthly')
     ],
     validateRequest,
     async (req, res) => {
-        const { title, amount, duration, Kname } = req.body;
+        const { Kname, amount, frequency } = req.body;
 
         // Get the current user's information from the request
         const currentUser = req.user;
@@ -36,18 +35,28 @@ router.post(
             return res.status(404).send({ error: 'Kid not found' });
         }
 
-        // Create a new task
-        const task = new Task({
-            title,
+        // Calculate the next payment date based on the frequency
+        let nextPaymentDate = new Date();
+        if (frequency === 'daily') {
+            nextPaymentDate.setDate(nextPaymentDate.getDate() + 1);
+        } else if (frequency === 'weekly') {
+            nextPaymentDate.setDate(nextPaymentDate.getDate() + 7);
+        } else if (frequency === 'monthly') {
+            nextPaymentDate.setMonth(nextPaymentDate.getMonth() + 1);
+        }
+
+        // Create a new transfer record with allowance settings
+        const transfer = new Transfer({
+            fromParent: currentUser.id,
+            toKid: kid._id,
             amount,
-            duration,
-            parent: currentUser.id,
-            kid: kid._id
+            frequency,
+            nextPaymentDate
         });
 
-        await task.save();
+        await transfer.save();
 
-        res.status(201).send(task);
+        res.status(201).send({ message: 'Allowance set successfully', transfer });
     }
 );
 
