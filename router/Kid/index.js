@@ -1,10 +1,16 @@
-const express = require("express");
-const getTasksRouter = require("./getTasks");
+const express = require('express');
+const childSigninRouter = require('./childSignin');
+const getGoalsByChildRouter = require('./getGoalsByChild');
+const getTasksByChildRouter = require('./getTasksByChild');
+const getKidInfoRouter = require('./getKidInfo');
+
 
 const router = express.Router();
 
-router.use("/", getTasksRouter);
-router.use('/getGoals', getGoalsRouter);
+router.use('/signin', childSigninRouter);
+router.use('/goals', getGoalsByChildRouter);
+router.use('/tasks', getTasksByChildRouter);
+router.use('/info', getKidInfoRouter);
 
 
 module.exports = router;

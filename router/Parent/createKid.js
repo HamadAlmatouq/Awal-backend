@@ -18,20 +18,12 @@ router.post(
     async (req, res) => {
         const { Kname, email, birthday, civilID, mobile } = req.body;
 
-        // Get the current user's information from the request
-        const currentUser = req.user;
-        if (!currentUser) {
-            return res.status(401).send({ error: 'Not authenticated' });
-        }
-
         const kid = new Kid({
             Kname,
             email,
             birthday,
             civilID,
-            mobile,
-            Pname: currentUser.name, // Set Pname to the current user's name
-            parent: currentUser.id // Set parent to the current user's ID
+            mobile
         });
 
         await kid.save();

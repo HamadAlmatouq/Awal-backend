@@ -1,25 +1,47 @@
 const express = require('express');
-const Task = require('../../models/Task'); // Adjust the path as necessary
+const { body } = require('express-validator');
+const { validateRequest } = require('../../middleware');
+const Task = require('../../models/task');
+const Kid = require('../../models/kid');
 
 const router = express.Router();
 
-router.delete('/', async (req, res) => {
-    try {
-        const { title } = req.body;
-        if (!title) {
-            return res.status(400).json({ message: 'Title is required' });
+router.delete(
+    '/',
+    [
+        body('title').notEmpty().withMessage('Title is required'),
+        body('Kname').notEmpty().withMessage('Kid name is required')
+    ],
+    validateRequest,
+    async (req, res) => {
+        const { title, Kname } = req.body;
+
+        // Get the current user's information from the request
+        const currentUser = req.user;
+        if (!currentUser) {
+            return res.status(401).send({ error: 'Not authenticated' });
         }
 
-        const deletedTask = await Task.findOneAndDelete({ title });
+        // Check if the current user's role is parent
+        // if (currentUser.role !== 'parent') {
+        //     return res.status(403).send({ error: 'User is not a parent' });
+        // }
+
+        // Check if kid exists
+        const kid = await Kid.findOne({ Kname });
+        if (!kid) {
+            return res.status(404).send({ error: 'Kid not found' });
+        }
+
+        // Delete the task
+        const deletedTask = await Task.findOneAndDelete({ title, kid: kid._id });
 
         if (!deletedTask) {
-            return res.status(404).json({ message: 'Task not found' });
+            return res.status(404).send({ error: 'Task not found' });
         }
 
-        res.status(200).json({ message: 'Task deleted successfully' });
-    } catch (error) {
-        res.status(500).json({ message: 'Server error', error });
+        res.status(200).send({ message: 'Task deleted successfully' });
     }
-});
+);
 
 module.exports = router;

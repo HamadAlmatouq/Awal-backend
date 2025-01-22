@@ -1,9 +1,8 @@
 const express = require('express');
 const { body } = require('express-validator');
 const { validateRequest } = require('../../middleware');
-const Parent = require('../../models/Parent');
 const Kid = require('../../models/kid');
-const Task = require('../../models/Task');
+const Task = require('../../models/task');
 
 const router = express.Router();
 
@@ -25,7 +24,7 @@ router.post(
             return res.status(401).send({ error: 'Not authenticated' });
         }
 
-        // // Check if the current user's role is parent
+        // Check if the current user's role is parent
         // if (currentUser.role !== 'parent') {
         //     return res.status(403).send({ error: 'User is not a parent' });
         // }

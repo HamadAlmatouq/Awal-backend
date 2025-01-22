@@ -8,6 +8,8 @@ const { NotFoundError } = require("./errors");
 
 const { authRouter } = require("./router/User");
 const { parentRouter } = require("./router/Parent");
+const kidRouter = require("./router/Kid");
+
 
 
 
@@ -27,6 +29,9 @@ app.use(currentUser);
  */
 app.use("/auth", authRouter);
 app.use("/parent", parentRouter);
+app.use("/kid", kidRouter);
+
+
 
 
 /**

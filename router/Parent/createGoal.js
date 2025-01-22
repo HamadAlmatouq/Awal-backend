@@ -11,6 +11,7 @@ router.post(
     [
         body('title').notEmpty().withMessage('Title is required'),
         body('amount').isFloat({ gt: 0 }).withMessage('Amount must be greater than zero'),
+        body('image').notEmpty().withMessage('Image is required'),
         body('endDate').isISO8601().withMessage('End date must be a valid date'),
         body('Kname').notEmpty().withMessage('Kid name is required')
     ],

@@ -7,6 +7,8 @@ const TransferSchema = new Schema({
     date: { type: Date, default: Date.now },
     frequency: { type: String, enum: ['daily', 'weekly', 'monthly'], required: false },
     nextPaymentDate: { type: Date, required: false }
+    
+
 });
 
 module.exports = model('Transfer', TransferSchema);
