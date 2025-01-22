@@ -9,6 +9,7 @@ const GoalSchema = new Schema({
     Kname: { type: String, required: true },
     parent: { type: Types.ObjectId, ref: 'Parent', required: true },
     kid: { type: Types.ObjectId, ref: 'Kid', required: true }
+    
 });
 
 module.exports = model('Goal', GoalSchema);

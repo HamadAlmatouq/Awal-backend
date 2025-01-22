@@ -18,12 +18,25 @@ router.post(
     async (req, res) => {
         const { Kname, email, birthday, civilID, mobile } = req.body;
 
+        // Get the current user's information from the request
+        const currentUser = req.user;
+        if (!currentUser) {
+            return res.status(401).send({ error: 'Not authenticated' });
+        }
+
+        // Check if the current user's role is parent
+        // if (currentUser.role !== 'parent') {
+        //     return res.status(403).send({ error: 'User is not a parent' });
+        // }
+
         const kid = new Kid({
             Kname,
             email,
             birthday,
             civilID,
-            mobile
+            mobile,
+            Pname: currentUser.name, // Assuming the parent's name is stored in the 'name' field
+            parent: currentUser.id // Associate the kid with the parent
         });
 
         await kid.save();
