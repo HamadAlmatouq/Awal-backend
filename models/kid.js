@@ -5,7 +5,7 @@ const KidSchema = new Schema({
     Kname: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     birthday: { type: Date, required: true },
-    civilID: { type: String, required: true },
+    civilID: { type: String, required: true, unique: true },
     mobile: { type: String, required: true },
     savings : { type: Number, default: 30},
     balance : { type: Number, default: 55},

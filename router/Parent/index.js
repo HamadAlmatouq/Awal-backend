@@ -10,6 +10,8 @@ const deleteGoalRouter = require('./deleteGoal');
 const getKidsByParentRouter = require('./getKidsByParent');
 const getGoalsByKidNameRouter = require('./getGoalsByKidName');
 const getTasksByKidNameRouter = require('./getTasksByKidName');
+const getParentInfoRouter = require("./getParentInfo");
+
 
 
 
@@ -29,6 +31,8 @@ router.use('/deleteGoal', deleteGoalRouter);
 router.use('/transfer', transferRouter);
 router.use('/getGoalsByKidName', getGoalsByKidNameRouter);
 router.use('/getTasksByKidName', getTasksByKidNameRouter);
+router.use("/info", getParentInfoRouter);
+
 
 
 

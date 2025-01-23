@@ -23,17 +23,18 @@ router.post(
             return res.status(401).send({ error: 'Not authenticated' });
         }
 
-        // // Check if the current user's role is parent
-        // if (currentUser.role !== 'parent') {
-        //     return res.status(403).send({ error: 'User is not a parent' });
-        // }
+        // Check if the current user's role is parent
+        if (currentUser.role !== 'parent') {
+            return res.status(403).send({ error: 'User is not a parent' });
+        }
 
-        // Check if parent has sufficient balance
-        const parent = await Parent.findById(currentUser.id);
+        // Check if parent exists
+        const parent = await Parent.findOne({ user: currentUser.id });
         if (!parent) {
             return res.status(404).send({ error: 'Parent not found' });
         }
 
+        // Check if parent has sufficient balance
         if (parent.balance < amount) {
             return res.status(400).send({ error: 'Insufficient balance' });
         }

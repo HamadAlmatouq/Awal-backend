@@ -1,13 +1,11 @@
-const { model, Schema } = require('mongoose');
-
-const PasswordManager = require ('../helpers/PasswordManager');
-const { type } = require('os');
+const { model, Schema, models } = require('mongoose');
+const PasswordManager = require('../helpers/PasswordManager');
 
 const UserSchema = new Schema({
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    role: { type: String, required: true, default: 'parent' } ,// Ensure role is included
-    parent: { type: Schema.Types.ObjectId, ref: 'Parent' }
+    role: { type: String, required: true, default: 'parent' },
+    parent: { type: Schema.Types.ObjectId, ref: 'Parent' },
 });
 
 UserSchema.pre('save', async function (next) {
@@ -17,4 +15,4 @@ UserSchema.pre('save', async function (next) {
     next();
 });
 
-module.exports = model('User', UserSchema);
+module.exports = models.User || model('User', UserSchema);
