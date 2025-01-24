@@ -11,6 +11,8 @@ const getKidsByParentRouter = require('./getKidsByParent');
 const getGoalsByKidNameRouter = require('./getGoalsByKidName');
 const getTasksByKidNameRouter = require('./getTasksByKidName');
 const getParentInfoRouter = require("./getParentInfo");
+const getPendingTasksRouter = require("./getPendingTasks");
+
 const updateTaskCompletionRequestStatusRouter = require("./updateTaskCompletionRequestStatus");
 
 
@@ -34,6 +36,8 @@ router.use('/transfer', transferRouter);
 router.use('/getGoalsByKidName', getGoalsByKidNameRouter);
 router.use('/getTasksByKidName', getTasksByKidNameRouter);
 router.use("/info", getParentInfoRouter);
+router.use("/getPendingTasks", getPendingTasksRouter);
+
 router.use("/updateTaskCompletionRequestStatus", updateTaskCompletionRequestStatusRouter);
 
 
