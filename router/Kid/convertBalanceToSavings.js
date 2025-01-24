@@ -43,13 +43,18 @@ router.post(
 
         await kid.save();
 
-        // Check if any goals are met
+        // Check if any goals are met and update percentage
         const goals = await Goal.find({ kid: kid._id, status: 'pending' });
         for (const goal of goals) {
-            if (kid.savings >= goal.amount) {
+            goal.savedAmount += amount;
+            goal.percentage = Math.min(100, (goal.savedAmount / goal.amount) * 100);
+
+            if (goal.savedAmount >= goal.amount) {
                 goal.status = 'completed';
-                await goal.save();
+                goal.percentage = 100;
             }
+
+            await goal.save();
         }
 
         res.status(200).send({ message: 'Amount converted to savings successfully', kid });

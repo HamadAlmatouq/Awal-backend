@@ -25,9 +25,9 @@ router.post(
         }
 
         // Check if the current user's role is parent
-        // if (currentUser.role !== 'parent') {
-        //     return res.status(403).send({ error: 'User is not a parent' });
-        // }
+        if (currentUser.role !== 'parent') {
+            return res.status(403).send({ error: 'User is not a parent' });
+        }
 
         // Check if kid exists
         const kid = await Kid.findOne({ Kname });

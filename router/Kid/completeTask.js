@@ -2,7 +2,7 @@ const express = require('express');
 const { body } = require('express-validator');
 const { validateRequest } = require('../../middleware');
 const Task = require('../../models/task');
-const Kid = require('../../models/kid');
+const TaskCompletionRequest = require('../../models/taskCompletionRequest');
 const Parent = require('../../models/Parent');
 
 const router = express.Router();
@@ -38,31 +38,16 @@ router.post(
             return res.status(400).send({ error: 'Task is already completed' });
         }
 
-        // Find the parent by ID
-        const parent = await Parent.findById(task.parent);
-        if (!parent) {
-            return res.status(404).send({ error: 'Parent not found' });
-        }
+        // Create a task completion request
+        const taskCompletionRequest = new TaskCompletionRequest({
+            task: task._id,
+            kid: currentUser.id,
+            parent: task.parent
+        });
 
-        // Check if the parent has sufficient balance
-        if (parent.balance < task.amount) {
-            return res.status(400).send({ error: 'Parent has insufficient balance' });
-        }
+        await taskCompletionRequest.save();
 
-        // Transfer the amount from parent to kid
-        parent.balance -= task.amount;
-        await parent.save();
-
-        const kid = await Kid.findById(currentUser.id);
-        kid.balance += task.amount;
-        await kid.save();
-
-        // Mark the task as completed
-        task.completed = true;
-        task.pending = false;
-        await task.save();
-
-        res.status(200).send({ message: 'Task completed successfully', task });
+        res.status(201).send({ message: 'Task completion request submitted successfully', taskCompletionRequest });
     }
 );
 
