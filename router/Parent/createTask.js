@@ -11,7 +11,7 @@ router.post(
     [
         body('title').notEmpty().withMessage('Title is required'),
         body('amount').isFloat({ gt: 0 }).withMessage('Amount must be greater than zero'),
-        body('duration').isInt({ gt: 0 }).withMessage('Duration must be greater than zero'),
+        body('duration').isFloat({ gt: 0 }).withMessage('Duration must be greater than zero'),
         body('Kname').notEmpty().withMessage('Kid name is required')
     ],
     validateRequest,
@@ -40,6 +40,7 @@ router.post(
             title,
             amount,
             duration,
+            remainingDuration: duration, // Set remaining duration
             parent: currentUser.id,
             kid: kid._id
         });

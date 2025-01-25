@@ -11,6 +11,7 @@ const { parentRouter } = require("./router/Parent");
 const kidRouter = require("./router/Kid");
 
 
+require('./scheduler/taskScheduler'); 
 
 
 
