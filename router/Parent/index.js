@@ -3,24 +3,16 @@ const createKidRouter = require("./createKid");
 const createTaskRouter = require("./createTask");
 const deleteTaskRouter = require('./deleteTask');
 const createGoalRouter = require('./createGoal');
+const deleteGoalRouter = require('./deleteGoal');
 const transferRouter = require('./createTransfer');
 const createAllowanceRouter = require('./createAllowance');
 const stopAllowanceRouter = require('./stopAllowance');
-const deleteGoalRouter = require('./deleteGoal');
 const getKidsByParentRouter = require('./getKidsByParent');
 const getGoalsByKidNameRouter = require('./getGoalsByKidName');
 const getTasksByKidNameRouter = require('./getTasksByKidName');
 const getParentInfoRouter = require("./getParentInfo");
 const getPendingTasksRouter = require("./getPendingTasks");
-
 const updateTaskCompletionRequestStatusRouter = require("./updateTaskCompletionRequestStatus");
-
-
-
-
-
-
-
 
 const router = express.Router();
 
@@ -37,13 +29,6 @@ router.use('/getGoalsByKidName', getGoalsByKidNameRouter);
 router.use('/getTasksByKidName', getTasksByKidNameRouter);
 router.use("/info", getParentInfoRouter);
 router.use("/getPendingTasks", getPendingTasksRouter);
-
 router.use("/updateTaskCompletionRequestStatus", updateTaskCompletionRequestStatusRouter);
 
-
-
-
-
-
-
-module.exports = { parentRouter: router };
+module.exports = router;

@@ -7,13 +7,10 @@ const { handleErrors, currentUser } = require("./middleware");
 const { NotFoundError } = require("./errors");
 
 const { authRouter } = require("./router/User");
-const { parentRouter } = require("./router/Parent");
+const parentRouter = require("./router/Parent");
 const kidRouter = require("./router/Kid");
 
-
-require('./scheduler/taskScheduler'); 
-
-
+require('./scheduler/taskScheduler'); // Start the task scheduler
 
 const app = express();
 app.use(cors());
@@ -32,14 +29,11 @@ app.use("/auth", authRouter);
 app.use("/parent", parentRouter);
 app.use("/kid", kidRouter);
 
-
-
-
 /**
  * Not Found Catch all
  */
 app.all("*", (req) => {
-  throw NotFoundError(`${req.method} ${req.url}: Route not found`);
+  throw new NotFoundError(`${req.method} ${req.url}: Route not found`);
 });
 
 /**
