@@ -13,6 +13,8 @@ const getTasksByKidNameRouter = require('./getTasksByKidName');
 const getParentInfoRouter = require("./getParentInfo");
 const getPendingTasksRouter = require("./getPendingTasks");
 const updateTaskCompletionRequestStatusRouter = require("./updateTaskCompletionRequestStatus");
+const getCompletedTaskRouter = require("./getCompletedTask");
+
 
 const router = express.Router();
 
@@ -30,5 +32,7 @@ router.use('/getTasksByKidName', getTasksByKidNameRouter);
 router.use("/info", getParentInfoRouter);
 router.use("/getPendingTasks", getPendingTasksRouter);
 router.use("/updateTaskCompletionRequestStatus", updateTaskCompletionRequestStatusRouter);
+router.use("/getCompletedTask", getCompletedTaskRouter);
+
 
 module.exports = router;

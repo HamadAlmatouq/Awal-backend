@@ -3,7 +3,7 @@ const Task = require('../models/task');
 
 // Schedule a job to run every minute
 cron.schedule('* * * * *', async () => {
-    console.log('Running task scheduler...');
+    
 
     // Find all pending tasks
     const tasks = await Task.find({ pending: true, completed: false, expired: false });
