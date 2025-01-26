@@ -66,12 +66,12 @@ router.post(
             // Update kid's balance
             kid.balance += task.amount;
             await kid.save();
-
-            // Mark the task as completed
-            task.completed = true;
-            task.pending = false;
-            await task.save();
         }
+
+        // Mark the task as not completed
+        task.completed = false;
+        task.pending = false;
+        await task.save();
 
         // Update the task completion request status
         taskCompletionRequest.status = status;

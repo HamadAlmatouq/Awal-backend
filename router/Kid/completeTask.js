@@ -3,7 +3,6 @@ const { body } = require('express-validator');
 const { validateRequest } = require('../../middleware');
 const Task = require('../../models/task');
 const TaskCompletionRequest = require('../../models/taskCompletionRequest');
-const Parent = require('../../models/Parent');
 
 const router = express.Router();
 
@@ -38,16 +37,22 @@ router.post(
             return res.status(400).send({ error: 'Task is already completed' });
         }
 
+        // Mark the task as completed
+        task.completed = true;
+        task.pending = true; // Set pending to true to indicate that it needs approval
+        await task.save();
+
         // Create a task completion request
         const taskCompletionRequest = new TaskCompletionRequest({
             task: task._id,
             kid: currentUser.id,
-            parent: task.parent
+            parent: task.parent,
+            status: 'pending'
         });
 
         await taskCompletionRequest.save();
 
-        res.status(201).send({ message: 'Task completion request submitted successfully', taskCompletionRequest });
+        res.status(200).send({ message: 'Task marked as completed and pending approval', task });
     }
 );
 
